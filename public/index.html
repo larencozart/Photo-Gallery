@@ -1,45 +1,17 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en-US">
   <head>
-    <title>Photo Gallery</title>
+    <title></title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="stylesheets/gallery.css" />
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
     <script src="javascripts/gallery.js"></script>
   </head>
   <body>
     <main>
-      <h1>Matisse's Photos</h1>
+      <h1>Amanda Rose's Photos</h1>
       <div id="slideshow">
         <div id="slides">
-          <figure data-id="1">
-            <img src="https://upload.wikimedia.org/wikipedia/en/9/9a/Henri_Matisse%2C_1911%2C_Portrait_de_la_famille_du_peintre%2C_oil_on_canvas%2C_143_x_194_cm%2C_Hermitage_Museum%2C_St._Petersburg.jpg" />
-            <figcaption>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </figcaption>
-          </figure>
-          <figure data-id="2">
-            <img src="https://upload.wikimedia.org/wikipedia/en/e/e7/Henri_Matisse%2C_1912-13%2C_Le_caf%C3%A9_Maure_%28Arab_Coffeehouse%29%2C_oil_on_canvas%2C_176_x_210_cm%2C_Hermitage_Museum.jpg" />
-            <figcaption>
-              At vero eos et accusamus et iusto odio dignissimos ducimus qui
-              blanditiis praesentium voluptatum deleniti atque corrupti quos
-              dolores et quas molestias excepturi sint occaecati cupiditate non
-              provident, similique sunt in culpa qui officia deserunt mollitia
-              animi, id est laborum et dolorum fuga.
-            </figcaption>
-          </figure>
-          <figure data-id="3">
-            <img src="https://artguide.artforum.com/uploads/guide.007/id05980/exhibition00_430x.jpg" />
-            <figcaption>
-              At vero eos et accusamus et iusto odio dignissimos ducimus qui
-              blanditiis praesentium voluptatum deleniti atque corrupti quos
-              dolores et quas molestias excepturi sint occaecati cupiditate non
-              provident, similique sunt in culpa qui officia deserunt mollitia
-              animi, id est laborum et dolorum fuga.
-            </figcaption>
-          </figure>
         </div>
         <ul>
           <li><a class="prev" href="#">Prev</a></li>
@@ -49,81 +21,11 @@
 
       <section>
         <header>
-          <h2>City Lights</h2>
-          <p><time>Taken on 3/31/15</time></p>
-          <div class="actions">
-            <a
-              href="/photos/like"
-              data-id="1"
-              data-property="likes"
-              class="button like"
-            >
-              ♡ 5 Likes
-            </a>
-            <a
-              href="/photos/favorite"
-              data-id="1"
-              data-property="favorites"
-              class="button favorite"
-            >
-              ☆ 2 Favorites
-            </a>
-          </div>
         </header>
 
         <div id="comments">
           <h3>Comments</h3>
           <ul>
-            <li>
-              <article>
-                <figure>
-                  <img
-                    src="http://gravatar.com/avatar/9f6f9c0b100d371267f07a12f73edf9d"
-                  />
-                </figure>
-                <header>
-                  <h1>Shane Riley</h1>
-                  <p>
-                    <small><time>Posted 3/31/15</time></small>
-                  </p>
-                </header>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-              </article>
-            </li>
-            <li>
-              <article>
-                <figure>
-                  <img
-                    src="http://gravatar.com/avatar/0af2673451bb2c52eda2a7aa1f2467c9"
-                  />
-                </figure>
-                <header>
-                  <h1>Constance Zemicky</h1>
-                  <p>
-                    <small><time>Posted 3/31/15</time></small>
-                  </p>
-                </header>
-                <p>
-                  Keffiyeh next level readymade, hashtag chillwave tofu freegan
-                  PBR&amp;B cray four dollar toast Echo Park art party American
-                  Apparel Portland skateboard. Semiotics Bushwick flexitarian,
-                  plaid drinking vinegar deep v keytar lomo squid banjo
-                  sustainable try-hard PBR cronut ethical. Scenester bitters
-                  roof party tofu, disrupt flannel deep v Brooklyn meditation
-                  actually blog Austin pop-up Thundercats wayfarers.
-                  Fingerstache High Life brunch VHS, sriracha Bushwick hashtag
-                  Helvetica banh mi raw denim. Flannel Etsy keffiyeh blog
-                  stumptown bespoke leggings cornhole. Heirloom PBR&amp;B
-                  letterpress blog Odd Future readymade messenger bag, aesthetic
-                  literally. Yr Banksy banh mi authentic PBR.
-                </p>
-              </article>
-            </li>
           </ul>
 
           <form action="/comments/new" method="post">
@@ -134,18 +36,9 @@
                 <dt><label for="name">Your Name</label></dt>
                 <dd><input type="text" name="name" id="name" /></dd>
                 <dt><label for="email">Email Address</label></dt>
-                <dd>
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="you@example.com"
-                  />
-                </dd>
+                <dd><input type="email" name="email" id="email" placeholder="you@example.com" /></dd>
                 <dt><label for="body">Comment</label></dt>
-                <dd>
-                  <textarea rows="6" cols="40" name="body" id="body"></textarea>
-                </dd>
+                <dd><textarea rows="6" cols="40" name="body" id="body"></textarea></dd>
               </dl>
               <input type="submit" value="Post Comment" class="button" />
             </fieldset>
@@ -156,7 +49,7 @@
 
     <script id="photos" type="text/x-handlebars">
       {{#each photos}}
-      <figure data-id="{{id}}">
+      <figure class="hide" data-id="{{id}}">
         <img src="{{src}}" />
         <figcaption>{{caption}}</figcaption>
       </figure>
@@ -190,10 +83,21 @@
 
     <script id="photo_comments" type="text/x-handlebars">
       {{#each comments}}
-      {{> photo_comment}}
+      <li>
+        <article>
+          <figure>
+            <img src="{{gravatar}}" />
+          </figure>
+          <header>
+            <h1>{{name}}</h1>
+            <p><small><time>Posted {{date}}</time></small></p>
+          </header>
+          <p>{{body}}</p>
+        </article>
+      </li>
       {{/each}}
     </script>
-
+<!-- 
     <script id="photo_comment" data-type="partial" type="text/x-handlebars">
       <li>
         <article>
@@ -207,6 +111,6 @@
           <p>{{body}}</p>
         </article>
       </li>
-    </script>
+    </script> -->
   </body>
 </html>
