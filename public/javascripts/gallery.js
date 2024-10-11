@@ -14,10 +14,10 @@ class PhotoGallery {
     this.next = document.querySelector('.next');
 
     this.compileHandlebarTemplates();
-    this.displaySlideShow();
-    this.attachListeners();
+    this.createPhotoGallery();
   }
 
+  // view functions
   compileHandlebarTemplates() {
     document.querySelectorAll("script[type='text/x-handlebars']").forEach(tmpl => {
       this.templates[tmpl.id] = Handlebars.compile(tmpl.innerHTML);
@@ -28,37 +28,20 @@ class PhotoGallery {
     });
   }
 
-  attachListeners() {
-    this.prev.addEventListener("click", this.handlePrevLink.bind(this));
-    this.next.addEventListener("click", this.handleNextLink.bind(this));
+  resetPhotoVisibility() {
+    let imgs = Array.from(this.slides.querySelectorAll('img'));
+    let currentImg = imgs.find(img => img.src === this.currentPhoto.src);
+
+    currentImg.parentNode.classList.remove("hide");
+    currentImg.parentNode.classList.add("show");
   }
 
-  async fetchPhotos() {
-    let response = await fetch(`/photos`);
-    this.photos = await response.json();
-  }
-
-  async fetchComments() {
-    let response = await fetch(`/comments?photo_id=${this.currentPhoto.id}`);
-    this.comments = await response.json();
-  }
-
-  async displaySlideShow() {
+  async createPhotoGallery() {
     await this.fetchPhotos();
     this.currentPhoto = this.photos[0]; // set this the first time
 
     await this.displayPhoto();
-  }
-
-  resetPhotoVisibility() {
-    let imgs = Array.from(this.slides.querySelectorAll('img'));
-    let currentImg = imgs.find(img => {
-      console.log("IMG element src:", img.src);
-      return img.src === this.currentPhoto.src
-    });
-
-    currentImg.parentNode.classList.remove("hide");
-    currentImg.parentNode.classList.add("show");
+    this.attachListeners();
   }
 
   async displayPhoto() {
@@ -71,7 +54,44 @@ class PhotoGallery {
     this.commentsList.innerHTML = this.templates.photo_comments({comments: this.comments});
   }
 
-  handlePrevLink(e) {
+
+  // model functions
+  async fetchPhotos() {
+    let response = await fetch(`/photos`);
+    this.photos = await response.json();
+  }
+
+  async fetchComments() {
+    let response = await fetch(`/comments?photo_id=${this.currentPhoto.id}`);
+    this.comments = await response.json();
+  }
+
+  async likeOrFavPhoto(path, id) {
+    try {
+      let response = await fetch(path, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: `photo_id=${id}`
+      });
+  
+      return response.ok;
+
+    } catch (error) {
+      console.error(error.message);
+    }
+
+  }
+
+  // controller functions
+  attachListeners() {
+    this.prev.addEventListener("click", this.handlePrevButton.bind(this));
+    this.next.addEventListener("click", this.handleNextButton.bind(this));
+    this.photoHeader.addEventListener("click", this.handleLikeOrFav.bind(this))
+  }
+
+  handlePrevButton(e) {
     e.preventDefault();
 
     let index = this.photos.findIndex(photo => photo.id === this.currentPhoto.id);
@@ -81,7 +101,7 @@ class PhotoGallery {
     this.displayPhoto();
   }
 
-  handleNextLink(e) {
+  handleNextButton(e) {
     e.preventDefault();
 
     let index = this.photos.findIndex(photo => photo.id === this.currentPhoto.id);
@@ -89,6 +109,20 @@ class PhotoGallery {
 
     this.currentPhoto = nextPhoto;
     this.displayPhoto();
+  }
+
+  async handleLikeOrFav(e) {
+    e.preventDefault()
+    let path = e.target.href;
+    let id = e.target.getAttribute("data-id");
+    let updated = await this.likeOrFavPhoto(path, id);
+
+    if (updated) {
+      console.log("Successfully liked or favorited");
+      // change content of button to be new updated count
+    } else {
+      console.log("Failed to like or fave");
+    }
   }
 }
 
