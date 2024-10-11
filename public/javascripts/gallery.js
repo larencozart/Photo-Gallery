@@ -76,7 +76,9 @@ class PhotoGallery {
         body: `photo_id=${id}`
       });
   
-      return response.ok;
+      let json = await response.json();
+
+      return json.total;
 
     } catch (error) {
       console.error(error.message);
@@ -113,13 +115,13 @@ class PhotoGallery {
 
   async handleLikeOrFav(e) {
     e.preventDefault()
+    let button = e.target;
     let path = e.target.href;
     let id = e.target.getAttribute("data-id");
-    let updated = await this.likeOrFavPhoto(path, id);
+    let newTotal = await this.likeOrFavPhoto(path, id);
 
-    if (updated) {
-      console.log("Successfully liked or favorited");
-      // change content of button to be new updated count
+    if (newTotal) {
+      button.innerText = button.innerText.replace(/\d+/, newTotal);
     } else {
       console.log("Failed to like or fave");
     }
