@@ -86,12 +86,16 @@ class PhotoGallery {
   }
 
   async addNewComment(data) {
-      let response = await fetch(this.commentForm.action, {
+    let params = new URLSearchParams([...data]);
+    params.set("photo_id", this.currentPhoto.id);
+    console.log(params);
+    
+    let response = await fetch(this.commentForm.action, {
       method: "POST",
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       },
-      body: new URLSearchParams([...data])
+      body: params,
     });
 
     let commentJSON = await response.json();
@@ -145,9 +149,11 @@ class PhotoGallery {
 
     let data = new FormData(this.commentForm);
     let newComment = await this.addNewComment(data);
+    console.log(newComment);
     
     if (newComment) {
       this.commentsList.insertAdjacentHTML("beforeend", this.templates.photo_comment(newComment));
+      this.commentForm.reset();
     } else {
       console.log("Comment failed to add");
     }
