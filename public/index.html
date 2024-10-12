@@ -83,6 +83,11 @@
 
     <script id="photo_comments" type="text/x-handlebars">
       {{#each comments}}
+      {{>photo_comment}}
+      {{/each}}
+    </script>
+
+    <script id="photo_comment" data-type="partial" type="text/x-handlebars">
       <li>
         <article>
           <figure>
@@ -95,7 +100,6 @@
           <p>{{body}}</p>
         </article>
       </li>
-      {{/each}}
     </script>
   </body>
 </html>

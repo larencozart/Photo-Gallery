@@ -12,6 +12,7 @@ class PhotoGallery {
     this.commentsList = document.querySelector('#comments ul');
     this.prev = document.querySelector('.prev');
     this.next = document.querySelector('.next');
+    this.commentForm = document.querySelector('form');
 
     this.compileHandlebarTemplates();
     this.createPhotoGallery();
@@ -54,7 +55,6 @@ class PhotoGallery {
     this.commentsList.innerHTML = this.templates.photo_comments({comments: this.comments});
   }
 
-
   // model functions
   async fetchPhotos() {
     let response = await fetch(`/photos`);
@@ -83,14 +83,27 @@ class PhotoGallery {
     } catch (error) {
       console.error(error.message);
     }
-
   }
 
+  async addNewComment(data) {
+      let response = await fetch(this.commentForm.action, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      body: new URLSearchParams([...data])
+    });
+
+    let commentJSON = await response.json();
+    return commentJSON;
+  }
+ 
   // controller functions
   attachListeners() {
     this.prev.addEventListener("click", this.handlePrevButton.bind(this));
     this.next.addEventListener("click", this.handleNextButton.bind(this));
-    this.photoHeader.addEventListener("click", this.handleLikeOrFav.bind(this))
+    this.photoHeader.addEventListener("click", this.handleLikeOrFav.bind(this));
+    this.commentForm.addEventListener("submit", this.handleCommentSubmit.bind(this));
   }
 
   handlePrevButton(e) {
@@ -124,6 +137,19 @@ class PhotoGallery {
       button.innerText = button.innerText.replace(/\d+/, newTotal);
     } else {
       console.log("Failed to like or fave");
+    }
+  }
+
+  async handleCommentSubmit(e) {
+    e.preventDefault();
+
+    let data = new FormData(this.commentForm);
+    let newComment = await this.addNewComment(data);
+    
+    if (newComment) {
+      this.commentsList.insertAdjacentHTML("beforeend", this.templates.photo_comment(newComment));
+    } else {
+      console.log("Comment failed to add");
     }
   }
 }
